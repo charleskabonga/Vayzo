@@ -1,0 +1,193 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "User profile with role-based access information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["customer", "merchant", "rider", "admin"] },
+        "phone": { "type": "string", "maxLength": 20 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "email", "role"]
+    },
+    "merchant": {
+      "title": "Merchant",
+      "description": "Registered local shop or supermarket merchant in Zambia",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 120 },
+        "category": { "type": "string" },
+        "description": { "type": "string", "maxLength": 500 },
+        "city": { "type": "string" },
+        "township": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "commissionRate": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "pending", "suspended"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "city", "status"]
+    },
+    "product": {
+      "title": "Product",
+      "description": "Catalog item sold by a merchant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "merchantId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 800 },
+        "category": { "type": "string" },
+        "unit": { "type": "string" },
+        "packSize": { "type": "string" },
+        "price": { "type": "number" },
+        "compareAtPrice": { "type": "number" },
+        "stock": { "type": "number" },
+        "status": { "type": "string", "enum": ["in_stock", "low_stock", "out_of_stock"] },
+        "has3dModel": { "type": "boolean" },
+        "modelType": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "merchantId", "name", "category", "price", "stock"]
+    },
+    "order": {
+      "title": "Order",
+      "description": "Customer purchase transaction record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "merchantId": { "type": "string" },
+        "merchantName": { "type": "string" },
+        "subtotal": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "serviceFee": { "type": "number" },
+        "total": { "type": "number" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PAYMENT_PENDING",
+            "CONFIRMED",
+            "MERCHANT_ACCEPTED",
+            "PREPARING",
+            "READY_FOR_PICKUP",
+            "RIDER_ASSIGNED",
+            "PICKED_UP",
+            "IN_TRANSIT",
+            "DELIVERED",
+            "CANCELLED"
+          ]
+        },
+        "paymentMethod": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "riderId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "merchantId", "subtotal", "deliveryFee", "total", "status"]
+    },
+    "deliveryTask": {
+      "title": "DeliveryTask",
+      "description": "Last-mile courier task assigned to a rider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderId": { "type": "string" },
+        "merchantId": { "type": "string" },
+        "riderId": { "type": "string" },
+        "status": { "type": "string" },
+        "pickupVerificationCode": { "type": "string" },
+        "deliveryConfirmationCode": { "type": "string" },
+        "estimatedDistanceKm": { "type": "number" },
+        "basePay": { "type": "number" },
+        "distancePay": { "type": "number" },
+        "tip": { "type": "number" },
+        "totalEarnings": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "orderId", "status", "totalEarnings"]
+    },
+    "financialLedgerEntry": {
+      "title": "FinancialLedgerEntry",
+      "description": "Immutable double-entry platform ledger item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderId": { "type": "string" },
+        "type": { "type": "string" },
+        "grossAmount": { "type": "number" },
+        "merchantShare": { "type": "number" },
+        "platformShare": { "type": "number" },
+        "riderShare": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "orderId", "grossAmount", "createdAt"]
+    },
+    "notification": {
+      "title": "Notification",
+      "description": "Real-time push notification for customer, merchant, or rider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "body": { "type": "string", "maxLength": 500 },
+        "targetRole": { "type": "string", "enum": ["all", "customer", "merchant", "rider", "admin"] },
+        "targetUserId": { "type": "string" },
+        "targetMerchantId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "type": { "type": "string", "enum": ["order", "delivery", "inventory", "payment", "system"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "body", "targetRole", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/user" },
+      "description": "Stores user account and role profiles"
+    },
+    "/merchants/{merchantId}": {
+      "schema": { "$ref": "#/entities/merchant" },
+      "description": "Stores registered merchant profile documents"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/product" },
+      "description": "Stores catalog items available for sale"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/order" },
+      "description": "Stores customer orders with lifecycle status"
+    },
+    "/deliveryTasks/{taskId}": {
+      "schema": { "$ref": "#/entities/deliveryTask" },
+      "description": "Stores last-mile delivery dispatches for riders"
+    },
+    "/financialLedgerEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/financialLedgerEntry" },
+      "description": "Stores immutable financial accounting ledger lines"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/notification" },
+      "description": "Stores push notifications and dispatch updates"
+    }
+  }
+}
+

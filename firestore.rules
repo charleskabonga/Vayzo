@@ -1,0 +1,135 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all for Zero-Trust security
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Security Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'charleskabonga106@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Connection testing endpoint for boot check
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidId(userId)
+        && incoming().id == userId
+        && incoming().keys().hasAll(['id', 'email', 'role'])
+        && incoming().role in ['customer', 'merchant', 'rider'] // Cannot self-assign admin
+        && incoming().email is string && incoming().email.size() <= 100;
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin())
+        && isValidId(userId)
+        && incoming().id == existing().id
+        && (isAdmin() || incoming().role == existing().role); // Prevent non-admin self-escalation
+      allow delete: if isAdmin();
+    }
+
+    // Merchants Collection
+    match /merchants/{merchantId} {
+      allow get, list: if true; // Public directory for customer shopping
+      allow create: if isSignedIn() && isValidId(merchantId)
+        && (isAdmin() || request.auth.uid == merchantId);
+      allow update: if isSignedIn() && isValidId(merchantId)
+        && (isAdmin() || request.auth.uid == merchantId);
+      allow delete: if isAdmin();
+    }
+
+    // Products Collection
+    match /products/{productId} {
+      allow get, list: if true; // Public catalog
+      allow create: if isSignedIn() && isValidId(productId)
+        && (isAdmin() || incoming().merchantId == request.auth.uid);
+      allow update: if isSignedIn() && isValidId(productId)
+        && (isAdmin() || existing().merchantId == request.auth.uid);
+      allow delete: if isSignedIn() && isValidId(productId)
+        && (isAdmin() || existing().merchantId == request.auth.uid);
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      allow get: if isSignedIn() && isValidId(orderId)
+        && (existing().customerId == request.auth.uid || existing().merchantId == request.auth.uid || existing().riderId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (
+        resource.data.customerId == request.auth.uid ||
+        resource.data.merchantId == request.auth.uid ||
+        resource.data.riderId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isSignedIn() && isValidId(orderId)
+        && incoming().customerId == request.auth.uid
+        && incoming().keys().hasAll(['id', 'customerId', 'merchantId', 'subtotal', 'deliveryFee', 'total', 'status']);
+      allow update: if isSignedIn() && isValidId(orderId)
+        && (existing().customerId == request.auth.uid || existing().merchantId == request.auth.uid || existing().riderId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Delivery Tasks Collection
+    match /deliveryTasks/{taskId} {
+      allow get: if isSignedIn() && isValidId(taskId)
+        && (existing().riderId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (
+        resource.data.riderId == request.auth.uid ||
+        resource.data.status == 'unassigned' ||
+        isAdmin()
+      );
+      allow create: if isAdmin() || (isSignedIn() && incoming().keys().hasAll(['id', 'orderId', 'status', 'totalEarnings']));
+      allow update: if isSignedIn() && isValidId(taskId)
+        && (existing().riderId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Financial Ledger (Immutable append-only for audits)
+    match /financialLedgerEntries/{entryId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin() || isSignedIn();
+      allow update, delete: if false; // Strict immutability: posted ledger entries cannot be overwritten
+    }
+
+    // Notifications Collection
+    match /notifications/{notificationId} {
+      allow get: if isSignedIn() && isValidId(notificationId)
+        && (existing().targetUserId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (
+        resource.data.targetUserId == request.auth.uid ||
+        resource.data.targetRole == 'all' ||
+        isAdmin()
+      );
+      allow create: if isSignedIn() && isValidId(notificationId)
+        && incoming().keys().hasAll(['id', 'title', 'body', 'targetRole', 'read', 'createdAt']);
+      allow update: if isSignedIn() && isValidId(notificationId)
+        && (existing().targetUserId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && isValidId(notificationId)
+        && (existing().targetUserId == request.auth.uid || isAdmin());
+    }
+  }
+}
+

@@ -1,0 +1,2512 @@
+PROJECT: VAYZO
+
+Build a World-Class AI-Powered Commerce, Grocery, Retail and Last-Mile Delivery Platform for Zambia
+
+Act as a world-class multidisciplinary product team consisting of:
+
+* A principal software architect.
+* A senior full-stack engineer.
+* A senior React and TypeScript developer.
+* A backend and database architect.
+* An AI engineer specializing in Google Gemini.
+* A payments and fintech integration engineer.
+* A logistics optimization engineer.
+* A cybersecurity engineer.
+* A product designer specializing in world-class mobile-first commerce applications.
+* A data scientist and financial modeling specialist.
+* A quality assurance engineer.
+* An experienced Zambian e-commerce and operations strategist.
+
+Your mission is to DESIGN, BUILD, TEST, AND ITERATIVELY IMPROVE VAYZO, an ambitious, AI-powered, multi-vendor commerce and delivery platform designed for Zambia and eventually the wider African market.
+
+Do not merely create a landing page, static dashboard, clickable mockup, or frontend demonstration.
+
+Build a coherent, full-stack application with real navigation, authentication, database persistence, business logic, role-based permissions, order management, financial calculations, and working interactions.
+
+Where credentials or external services are unavailable, implement a clearly labeled development adapter, document the integration requirements, and ensure the rest of the application remains functional.
+
+Do not falsely represent simulated payments, GPS tracking, SMS delivery, AI actions, or third-party integrations as live.
+
+Prioritize working functionality over unnecessary complexity. Make sensible architectural decisions without asking me questions.
+
+⸻
+
+1. THE VAYZO VISION
+
+Vayzo should become a trusted digital commerce and logistics operating system for Zambia.
+
+The initial focus is groceries and everyday essentials, but the architecture must support future expansion into:
+
+* Supermarkets.
+* Independent grocery shops.
+* Convenience stores.
+* Fresh produce.
+* Butcheries.
+* Bakeries.
+* Pharmacies, subject to appropriate licensing and restrictions.
+* Restaurants and prepared food.
+* Household supplies.
+* Personal care.
+* Electronics and other retail categories.
+* Business-to-business purchasing.
+* Scheduled deliveries.
+* Merchant logistics.
+* Local commerce advertising.
+* Eventually, regional commerce and logistics.
+
+Do not attempt to activate every category at launch. Build a configurable platform that can expand without requiring a complete rewrite.
+
+The initial operating market is Zambia, with Lusaka as a possible pilot market and the ability to configure other cities and towns.
+
+Support Zambian Kwacha (ZMW/K), local phone numbers, locally appropriate address entry, local delivery zones, mobile-first usage, and low-bandwidth conditions.
+
+Use English as the initial language. Architect the application for future support for Bemba, Nyanja, and other relevant languages.
+
+The brand promise is:
+
+“Everything you need. Delivered smarter.”
+
+The product should feel modern, trustworthy, premium, fast, intelligent, and distinctly African without relying on superficial cultural stereotypes.
+
+⸻
+
+2. NON-NEGOTIABLE TECHNICAL REQUIREMENTS
+
+Build a full-stack web application using the capabilities available in Google AI Studio.
+
+Preferred architecture:
+
+FRONTEND:
+
+* React.
+* TypeScript.
+* Vite or the framework supported by the AI Studio runtime.
+* Responsive mobile-first interface.
+* Accessible, reusable UI components.
+* A consistent design system.
+* Progressive Web App capabilities where supported.
+* Installable experience on compatible mobile devices.
+
+BACKEND:
+
+* Node.js server-side runtime.
+* TypeScript where supported.
+* Clearly separated API routes and business services.
+* Server-side validation.
+* Secure authentication and authorization.
+* Centralized error handling.
+* Structured logging.
+* Environment-based configuration.
+* Secure secret management.
+
+DATABASE:
+
+* Firebase Authentication.
+* Cloud Firestore.
+* Firebase Storage or an appropriate managed object-storage solution for product images and merchant documents.
+* Firestore transactions for critical order and financial state changes.
+* Proper database indexes.
+* Security rules.
+* A documented database schema.
+* Seed data for development and demonstration.
+
+AI:
+
+* Google Gemini API accessed through secure server-side code.
+* Never expose the Gemini API key in client-side code.
+* Create a reusable AI service layer.
+* Use the currently supported Gemini SDK and model identifiers rather than hardcoding obsolete model names.
+* Add model configuration through environment variables or server-side settings.
+* Apply usage limits, timeouts, structured output validation, and error handling.
+
+MAPS AND LOCATION:
+
+* Create an abstraction for geocoding, maps, distance calculations, routing, and delivery tracking.
+* Integrate a suitable Google Maps service when credentials are configured.
+* Do not claim to calculate live road routes when using straight-line distance.
+* Provide a manual address and delivery-zone fallback.
+
+PAYMENTS:
+
+* Build a payment-provider abstraction.
+* Support configurable payment methods, including:
+    * MTN Mobile Money, subject to provider access and integration.
+    * Airtel Money, subject to provider access and integration.
+    * Cash on delivery, where permitted by operational policy.
+    * Card payments through a supported payment provider.
+* Do not assume provider APIs are available without credentials.
+* Do not store raw card details.
+* Verify payment callbacks and webhooks server-side.
+* Use idempotency keys to prevent duplicate payment processing.
+* Clearly distinguish pending, successful, failed, reversed, and refunded payments.
+
+Do not substitute fake functionality for a real integration without labeling it.
+
+Use the existing Google AI Studio runtime conventions. If a preferred library is incompatible, use a compatible alternative and explain the change in the project documentation.
+
+⸻
+
+3. APPLICATION STRUCTURE
+
+Build four connected application experiences inside one coherent platform.
+
+A. CUSTOMER APPLICATION
+B. SHOP AND MERCHANT APPLICATION
+C. RIDER APPLICATION
+D. ADMINISTRATION AND OPERATIONS APPLICATION
+
+All experiences must share the same authoritative backend, database, authentication system, order records, product catalog, pricing rules, and event history.
+
+Users should see the correct interface and capabilities based on their authorized role.
+
+A user may have more than one role if an administrator grants it, but role assignment must be controlled securely.
+
+Never trust a role supplied by the browser. Verify roles and permissions on the server and in database security rules.
+
+Create a clean architecture that allows the experiences to share components without sharing inappropriate permissions.
+
+⸻
+
+4. DESIGN SYSTEM AND USER EXPERIENCE
+
+Create a premium interface that feels comparable in quality to leading global commerce applications.
+
+Design principles:
+
+* Mobile-first.
+* Fast.
+* Clean.
+* Highly visual.
+* Easy to navigate.
+* Trustworthy.
+* Accessible.
+* Responsive across phones, tablets, and desktop computers.
+* Suitable for users with varying levels of digital literacy.
+
+Use a distinctive Vayzo visual identity.
+
+Suggested direction:
+
+* Deep forest green as the primary brand color.
+* Fresh lime as an accent.
+* White and warm neutral backgrounds.
+* Dark text with strong contrast.
+* Rounded but restrained components.
+* High-quality product photography.
+* Subtle shadows and depth.
+* Smooth, purposeful animations.
+* Clear typography.
+* Consistent spacing and visual hierarchy.
+
+Use the following design principles:
+
+1. Every major action should be obvious.
+2. The checkout must be short and easy.
+3. Product prices and delivery charges must be transparent.
+4. Important order status information must be visible.
+5. Use skeleton loaders instead of blank screens.
+6. Show useful empty states.
+7. Add error messages that tell users what to do next.
+8. Preserve cart contents when navigating or refreshing.
+9. Avoid excessive animations that slow down inexpensive devices.
+10. Respect reduced-motion preferences.
+
+Build reusable components for:
+
+* Navigation.
+* Search.
+* Product cards.
+* Product galleries.
+* Price displays.
+* Rating displays.
+* Forms.
+* Dialogs.
+* Notifications.
+* Status badges.
+* Tables.
+* Charts.
+* Filters.
+* Pagination.
+* Empty states.
+* Loading states.
+* Error states.
+* Confirmation dialogs.
+
+Include a responsive customer navigation system and appropriate navigation for merchant, rider, and admin dashboards.
+
+Do not imitate another company’s branding or copy its interface pixel for pixel.
+
+⸻
+
+5. CUSTOMER APPLICATION
+
+Build a complete shopping experience.
+
+5.1 Onboarding and accounts
+
+Support:
+
+* Account registration.
+* Secure sign-in.
+* Google sign-in through Firebase Authentication.
+* Phone authentication where properly configured.
+* Email authentication.
+* Password recovery where applicable.
+* Profile editing.
+* Saved delivery addresses.
+* Preferred language.
+* Notification preferences.
+* Account deletion request and data-management workflows.
+
+Support guest browsing.
+
+Require an appropriate authenticated identity for checkout and sensitive account operations.
+
+Provide an onboarding flow that asks only for information needed to deliver the service.
+
+5.2 Homepage
+
+Build a dynamic homepage containing:
+
+* Delivery location selector.
+* Search bar.
+* AI shopping assistant entry point.
+* Promotional banners.
+* Category navigation.
+* Nearby available shops.
+* Popular products.
+* Frequently purchased items.
+* Fresh produce.
+* Deals and offers.
+* Recommended products.
+* Recently viewed products.
+* Reorder shortcuts.
+* Delivery-time estimates.
+* Clear minimum-order information where applicable.
+
+Personalization must respect consent and privacy settings.
+
+If recommendation data is insufficient, use sensible non-personalized defaults.
+
+Do not fabricate discounts, stock levels, customer reviews, or delivery estimates.
+
+5.3 Product catalog
+
+Every product should support:
+
+* Product ID.
+* Merchant ID.
+* Name.
+* Description.
+* Category.
+* Brand, where applicable.
+* SKU or barcode where available.
+* Product images.
+* Optional 3D model.
+* Unit of measurement.
+* Pack size.
+* Price.
+* Optional comparison or reference price.
+* Available quantity.
+* Availability status.
+* Weight and dimensions where relevant.
+* Storage requirements where relevant.
+* Expiry or freshness information where appropriate.
+* Allergen information when relevant.
+* Product attributes.
+* Merchant-specific stock.
+* Delivery eligibility.
+* Rating summary.
+* Review count.
+* Product status.
+* Created and updated timestamps.
+
+Handle different units properly, including:
+
+* Each.
+* Kilogram.
+* Gram.
+* Litre.
+* Millilitre.
+* Pack.
+* Carton.
+
+Prevent invalid fractional quantities for products sold only as individual units.
+
+For weighed products, support configurable quantity increments and price calculations.
+
+Product prices must come from authoritative backend data.
+
+5.4 Advanced search
+
+Build search functionality with:
+
+* Product-name search.
+* Category search.
+* Merchant search.
+* Brand search.
+* Typo tolerance where practical.
+* Search suggestions.
+* Filters.
+* Sorting.
+* Search history with appropriate privacy controls.
+* Popular search terms.
+* Relevant product recommendations.
+
+Filters should include:
+
+* Price.
+* Category.
+* Availability.
+* Merchant.
+* Rating.
+* Brand.
+* Delivery eligibility.
+* Promotions.
+
+Do not depend on Gemini to perform every ordinary product search. Use a proper catalog query or search index, with AI-assisted search as an enhancement.
+
+5.5 Shopping cart
+
+Build a persistent shopping cart with:
+
+* Quantity controls.
+* Remove-item controls.
+* Subtotal calculation.
+* Merchant grouping.
+* Delivery estimates.
+* Eligible promotions.
+* Out-of-stock warnings.
+* Price-change notifications.
+* Suggested replacements.
+* Clear checkout totals.
+
+If a customer shops from multiple merchants, explicitly show how orders and deliveries will be split.
+
+Support two checkout strategies:
+
+1. A single-merchant order for the initial MVP.
+2. A multi-merchant parent checkout that creates separate merchant suborders when the platform’s operations and delivery arrangements support it.
+
+For multi-merchant orders, show the combined cost and any separate delivery fees before payment.
+
+Never silently change an item quantity or substitute a product.
+
+5.6 Checkout
+
+Build a robust checkout flow with:
+
+* Delivery address.
+* Map pin when available.
+* Address instructions.
+* Contact phone number.
+* Delivery option.
+* Scheduled delivery where supported.
+* Item substitutions preference.
+* Promo code.
+* Delivery fee.
+* Service fee, if configured.
+* Taxes, if applicable.
+* Discounts.
+* Total amount.
+* Payment selection.
+* Order review.
+* Final confirmation.
+
+Allow customers to see the full breakdown before placing an order.
+
+Use server-side calculations.
+
+Never trust a total amount supplied by the client.
+
+Revalidate product availability and prices immediately before confirming the order.
+
+Use Firestore transactions or an equivalent atomic mechanism to prevent overselling and duplicate order creation.
+
+Design an order state machine and validate every state transition.
+
+5.7 Order tracking
+
+Create an order timeline with statuses such as:
+
+* Awaiting payment.
+* Confirmed.
+* Merchant accepting.
+* Preparing.
+* Ready for pickup.
+* Rider assigned.
+* Rider arriving at pickup.
+* Picked up.
+* In transit.
+* Arriving soon.
+* Delivered.
+* Cancelled.
+* Refund pending.
+* Refunded.
+* Failed.
+
+Only permit transitions valid for the current order state.
+
+Display an estimated delivery window and update it when meaningful new information arrives.
+
+Provide a tracking screen with:
+
+* Order details.
+* Merchant details.
+* Rider details after assignment.
+* Delivery progress.
+* Estimated arrival.
+* Contact and support actions.
+* Order receipt.
+* Delivery instructions.
+
+Integrate real-time location only when the rider has granted the required permission and an active delivery requires it.
+
+Do not expose a rider’s location outside an authorized active delivery.
+
+5.8 Reordering and shopping lists
+
+Support:
+
+* Reorder previous purchases.
+* Saved shopping lists.
+* Weekly grocery lists.
+* Household shopping lists.
+* Shared shopping lists where authorized.
+* Recurring-order preferences.
+* Reminders for frequently purchased items.
+* Price comparisons between available equivalent products.
+* Budget-based shopping lists.
+
+Reordering must recheck current prices, availability, and delivery eligibility.
+
+Recurring orders must not charge customers without an explicit authorization and a clear cancellation process.
+
+5.9 Customer loyalty and referrals
+
+Build configurable features for:
+
+* Loyalty points.
+* Referral codes.
+* Referral rewards.
+* Merchant promotions.
+* First-order offers.
+* Discount vouchers.
+* Customer segments.
+* Reward history.
+
+Prevent referral abuse through server-side eligibility rules, duplicate-account checks where lawful, and fraud monitoring.
+
+Do not make rewards financially unlimited.
+
+Every promotion must have:
+
+* Eligibility.
+* Start and end dates.
+* Maximum redemption limits.
+* Funding source.
+* Applicable products.
+* Usage history.
+* Abuse-prevention rules.
+
+5.10 Ratings and verified reviews
+
+Allow customers to rate:
+
+* Products.
+* Merchants.
+* Riders.
+* Overall delivery experience.
+
+Use a 1–5-star scale.
+
+Allow optional written reviews.
+
+Only customers with eligible completed orders may submit verified purchase reviews.
+
+Define eligibility separately for products, merchants, and riders.
+
+Prevent:
+
+* Duplicate reviews for the same eligible purchase.
+* Reviews from unrelated accounts.
+* Unauthorized editing.
+* Review manipulation.
+* Unapproved changes to ratings.
+
+Allow customers to edit a review according to a documented policy.
+
+Allow merchants to respond to reviews without deleting legitimate negative feedback.
+
+Add moderation tools for abusive or fraudulent content.
+
+Display rating averages, review counts, and verified-purchase indicators accurately.
+
+⸻
+
+6. 3D PRODUCT EXPERIENCE
+
+This is a signature feature of Vayzo.
+
+Create an attractive, performant product-viewing experience with optional 3D product models.
+
+Use a suitable WebGL-based viewer, such as Three.js with React Three Fiber, if compatible with the project.
+
+Support glTF/GLB models where practical.
+
+The experience should include:
+
+* Rotate.
+* Zoom.
+* Reset view.
+* Full-screen view where supported.
+* Model loading indicators.
+* Touch and mouse controls.
+* A fallback product image.
+* Responsive rendering.
+* Lazy loading.
+* Model compression where practical.
+* Accessible controls.
+* Reduced-motion support.
+
+Use 3D models for suitable products, such as:
+
+* Packaged goods.
+* Household products.
+* Appliances.
+* Electronics.
+* Selected home products.
+
+Do not require 3D models for every grocery item.
+
+For products without a model, show high-quality product photographs and multiple viewing angles when available.
+
+Never fabricate an exact 3D representation of a real product and present it as manufacturer-accurate.
+
+Clearly label illustrative 3D models when appropriate.
+
+6.1 Merchant 3D tools
+
+Allow merchants to:
+
+* Upload product images.
+* Upload approved 3D models.
+* Preview models before publishing.
+* Associate a model with a product.
+* Remove or replace a model.
+* See validation errors for unsupported files.
+
+Restrict upload file types and sizes.
+
+Validate file metadata, use safe storage, and do not serve untrusted uploaded content as executable code.
+
+If automated 3D generation from product images is unavailable, create a future-ready integration interface rather than pretending to generate accurate production-ready models.
+
+⸻
+
+7. GEMINI AI: VAYZO SMART ASSISTANT
+
+Integrate Google Gemini as a core feature, not merely a decorative chatbot.
+
+Give the assistant a distinctive identity: Vayzo AI.
+
+Use a secure server-side Gemini integration.
+
+Create a dedicated AI service module so model configuration, prompts, tools, rate limits, and safety policies can be maintained independently.
+
+7.1 Customer shopping assistant
+
+Create a conversational shopping assistant that can understand natural-language requests.
+
+Example requests:
+
+* “Help me buy groceries for K500.”
+* “I need food for a family of five for one week.”
+* “Find affordable ingredients for nshima and relish.”
+* “What can I cook with eggs, tomatoes, onions, and potatoes?”
+* “Find the cheapest available cooking oil near my delivery address.”
+* “Help me compare these two products.”
+* “Build a healthy shopping list within my budget.”
+* “Find products suitable for a birthday party.”
+* “Can I get everything on this list from one shop?”
+* “Help me replace an unavailable product.”
+
+The assistant should:
+
+1. Understand the user’s request.
+2. Identify relevant products and constraints.
+3. Query the actual product catalog.
+4. Check real availability.
+5. Calculate the total using authoritative prices.
+6. Explain any delivery or merchant constraints.
+7. Present a proposed shopping list.
+8. Allow the user to add selected items to the cart after confirmation.
+
+The model must never invent products, prices, inventory, discounts, delivery times, or order statuses.
+
+Use actual backend tools for product lookup, price comparison, shopping-list creation, and other permitted actions.
+
+Use structured JSON outputs for important machine-readable operations.
+
+Validate all AI-generated actions on the server.
+
+7.2 AI permissions
+
+The AI must not independently:
+
+* Charge a customer.
+* Complete a payment.
+* Issue an unrestricted refund.
+* Change a merchant’s prices.
+* Publish unapproved products.
+* Delete orders.
+* Assign arbitrary users administrative permissions.
+* Access unrelated customers’ private data.
+* Change a rider’s financial records.
+* Override business rules.
+
+Require explicit customer confirmation before adding an AI-generated basket to the cart or taking any consequential action.
+
+Require normal checkout confirmation before placing an order.
+
+7.3 Voice shopping
+
+Architect a future voice-shopping feature that supports speech input and spoken responses where the available APIs permit it.
+
+Users should eventually be able to say:
+
+“Vayzo, help me buy everything I need for this week’s groceries.”
+
+Do not make voice functionality a dependency for the core shopping flow.
+
+If live voice APIs are unavailable, implement a graceful text-chat fallback and document the next integration step.
+
+7.4 AI customer support
+
+The assistant should answer questions about:
+
+* How Vayzo works.
+* Delivery policies.
+* Order status.
+* Returns and refunds.
+* Promotions.
+* Account settings.
+* Payment troubleshooting.
+
+For private account-specific information, verify the customer and retrieve only the authorized records.
+
+For disputes or uncertain cases, escalate to human support.
+
+Do not fabricate a refund, claim that an order has been cancelled when it has not, or promise an unsupported delivery time.
+
+7.5 AI shopping intelligence
+
+Use Gemini to help with:
+
+* Budget-conscious baskets.
+* Ingredient-based meal planning.
+* Product comparisons.
+* Shopping-list organization.
+* Alternative-product suggestions.
+* Clear explanations of product attributes.
+* Personalized recommendations with appropriate consent.
+
+Do not make unsupported medical or nutritional claims.
+
+Use actual product information when making recommendations.
+
+7.6 Merchant AI assistant
+
+Build a separate merchant-facing AI assistant.
+
+It should help merchants:
+
+* Create product descriptions.
+* Improve product titles.
+* Suggest product categories.
+* Generate promotional copy.
+* Understand sales trends.
+* Identify slow-moving products.
+* Forecast likely demand using available historical data.
+* Suggest reorder quantities.
+* Detect suspicious changes in inventory.
+* Summarize customer feedback.
+* Draft responses to reviews.
+* Prepare daily business summaries.
+
+Forecasts must include uncertainty and should not be presented as guaranteed outcomes.
+
+The assistant must not publish product changes or spend advertising money without authorization.
+
+7.7 Rider AI assistant
+
+Build a rider-facing assistant for:
+
+* Explaining the next delivery task.
+* Summarizing pickup and delivery instructions.
+* Answering operational questions.
+* Helping interpret route instructions.
+* Explaining delivery procedures.
+* Reporting common delivery problems.
+
+Do not encourage riders to interact with the application while driving.
+
+Use concise, hands-free interaction where safely supported.
+
+The AI must not make unsupported decisions about rider penalties or earnings.
+
+7.8 Administrative AI copilot
+
+Build an administrator copilot that can summarize authorized business data.
+
+It should help with:
+
+* Daily orders.
+* Delivery delays.
+* Failed payments.
+* Refund requests.
+* Merchant performance.
+* Rider utilization.
+* Stock problems.
+* Revenue trends.
+* Customer complaints.
+* Suspicious activity.
+* Operational bottlenecks.
+
+All administrative queries must be permission-checked.
+
+For sensitive operations, the AI may prepare a proposed action, but an authorized administrator must review and confirm it.
+
+Log AI-assisted administrative actions.
+
+7.9 AI reliability and cost control
+
+Implement:
+
+* Per-user rate limits.
+* Request timeouts.
+* Retry policies where safe.
+* Token and usage monitoring.
+* Request logging that avoids unnecessary sensitive information.
+* Output validation.
+* Safe fallbacks.
+* Usage quotas.
+* Model selection through server configuration.
+* Caching for appropriate repeated requests.
+* Protection against prompt injection.
+* Separation between untrusted user content and trusted system instructions.
+
+Do not allow product descriptions or user messages to override system permissions.
+
+Never send payment credentials, passwords, or unnecessary personal information to Gemini.
+
+Track estimated AI cost per request and per customer where feasible.
+
+⸻
+
+8. SHOP AND MERCHANT APPLICATION
+
+Create a separate merchant dashboard.
+
+Merchants should have an intuitive business management system.
+
+8.1 Merchant onboarding
+
+Support:
+
+* Business name.
+* Owner information.
+* Contact information.
+* Business category.
+* Shop address.
+* Delivery coverage.
+* Operating hours.
+* Business documents.
+* Payout details through a secure, restricted process.
+* Approval status.
+* Platform terms acceptance.
+
+Create configurable verification workflows.
+
+Do not automatically mark an unverified merchant as approved.
+
+8.2 Merchant dashboard
+
+Display:
+
+* Today’s orders.
+* Orders requiring attention.
+* Gross merchandise value.
+* Merchant sales.
+* Estimated merchant proceeds.
+* Refunds.
+* Commission.
+* Average order value.
+* Best-selling products.
+* Low-stock products.
+* Customer ratings.
+* Fulfilment performance.
+* Order cancellation rate.
+
+Clearly distinguish revenue, cash collected, estimated earnings, and money actually paid out.
+
+8.3 Inventory management
+
+Allow merchants to:
+
+* Add products.
+* Edit products.
+* Upload images.
+* Set prices.
+* Manage product units.
+* Set stock quantities.
+* Mark products unavailable.
+* Set minimum stock thresholds.
+* Track stock movements.
+* Import catalog data from a validated CSV template.
+* Review inventory history.
+* Set operating hours.
+* Pause incoming orders.
+
+Use authoritative stock records.
+
+Prevent concurrent orders from overselling inventory.
+
+Create stock movement records for purchases, cancellations, returns, and corrections.
+
+8.4 Order management
+
+Merchants should be able to:
+
+* Accept or reject orders within configured rules.
+* View order items.
+* Confirm stock availability.
+* Prepare orders.
+* Mark orders ready for pickup.
+* Propose substitutions.
+* Record order-preparation problems.
+* Review cancellation requests.
+* Access receipts.
+* Communicate with authorized customers and riders.
+
+A substitution must require customer approval where the customer has not authorized an applicable substitution policy.
+
+Do not allow merchants to mark an order delivered unless their role and the delivery workflow authorize it.
+
+8.5 Merchant financials
+
+Display:
+
+* Order value.
+* Merchant-funded discounts.
+* Platform-funded discounts.
+* Platform commission.
+* Payment processing costs, where applicable.
+* Refund adjustments.
+* Merchant net proceeds.
+* Pending settlement.
+* Paid settlements.
+* Settlement history.
+
+Make the calculation formula visible.
+
+Do not assume the platform owns the entire amount paid for groceries.
+
+The merchant’s product proceeds, the platform’s delivery income, platform service fees, promotions, payment costs, refunds, and rider earnings must be accounted for separately.
+
+8.6 Merchant promotions
+
+Support:
+
+* Percentage discounts.
+* Fixed discounts.
+* Product-specific offers.
+* Time-limited promotions.
+* Minimum basket requirements.
+* Usage limits.
+* Merchant-funded promotions.
+* Platform-funded promotions.
+
+Store the funding source and calculate the financial effect of each promotion.
+
+8.7 Merchant analytics
+
+Provide:
+
+* Sales trends.
+* Product performance.
+* Stock turnover.
+* Average order value.
+* Cancellation rates.
+* Customer ratings.
+* Preparation time.
+* Repeat customer rate, where privacy rules permit.
+* Downloadable reports.
+
+Allow data export only to authorized merchant users.
+
+Merchants must never access another merchant’s private sales or customer data.
+
+⸻
+
+9. RIDER APPLICATION
+
+Build a rider-first interface optimized for mobile phones.
+
+It should be simple enough to use under real operational conditions.
+
+9.1 Rider onboarding
+
+Support:
+
+* Identity and contact information.
+* Verification documents.
+* Vehicle type.
+* Vehicle details where relevant.
+* License and insurance information where legally applicable.
+* Emergency contact.
+* Approved payment or payout details.
+* Training and onboarding status.
+* Approval workflow.
+
+Only authorized and approved riders may receive live delivery assignments.
+
+Apply relevant legal requirements to the specific vehicle and delivery service.
+
+9.2 Rider dashboard
+
+Show:
+
+* Online/offline status.
+* Available delivery offers.
+* Accepted deliveries.
+* Active deliveries.
+* Completed deliveries.
+* Today’s earnings.
+* Pending earnings.
+* Recent performance.
+* Support access.
+
+Do not display a fabricated earnings balance.
+
+9.3 Delivery assignment
+
+Create a server-controlled dispatch engine.
+
+Consider:
+
+* Rider availability.
+* Rider approval status.
+* Distance to merchant.
+* Estimated travel time when routing data is available.
+* Vehicle type.
+* Delivery capacity.
+* Current workload.
+* Pickup readiness.
+* Delivery zone.
+* Customer delivery window.
+* Fair allocation of jobs.
+* Rider safety.
+* Fraud and abuse signals.
+
+Start with a transparent rules-based algorithm.
+
+Use weighted scoring rather than claiming to solve a globally optimal routing problem.
+
+Provide an assignment explanation for operations staff.
+
+Allow dispatch to fall back to manual assignment.
+
+Do not assign a job to a rider who is offline, unapproved, unavailable, or already at capacity.
+
+Do not automatically penalize riders for rejecting an offer without a documented and fair policy.
+
+9.4 Rider workflow
+
+The rider should be able to:
+
+1. Go online.
+2. Receive a delivery offer.
+3. View estimated distance, expected pay, pickup location, and delivery zone.
+4. Accept or decline.
+5. Navigate to the merchant.
+6. Confirm arrival.
+7. Confirm pickup using an authorized verification process.
+8. Navigate to the customer.
+9. Contact the customer through approved channels.
+10. Confirm delivery.
+11. Record permitted delivery evidence when necessary.
+12. Report an incident.
+13. Complete the job and review earnings.
+
+Use pickup verification and delivery confirmation codes where appropriate.
+
+Do not expose sensitive customer information before it is necessary for the assigned delivery.
+
+9.5 Location and tracking
+
+Support:
+
+* Permission-based location collection.
+* Foreground tracking during active deliveries.
+* Background tracking only when supported by the installed platform and properly authorized.
+* Last known location.
+* Location timestamp.
+* Tracking freshness indicators.
+* Map display.
+* Delivery event history.
+
+Do not pretend to track riders when location updates have stopped.
+
+Show “Location last updated…” when data becomes stale.
+
+Avoid continuous location collection when the rider is offline.
+
+9.6 Rider earnings
+
+Create a transparent earnings ledger.
+
+Track:
+
+* Base delivery pay.
+* Distance component.
+* Eligible waiting compensation.
+* Bonuses.
+* Tips.
+* Approved adjustments.
+* Penalties only where legally permitted and governed by a clear policy.
+* Withdrawals or payouts.
+* Pending balances.
+* Completed settlements.
+
+Use configurable pay formulas.
+
+Example configurable formula:
+
+Rider delivery earnings =
+base delivery pay
+
+* eligible distance component
+* approved waiting compensation
+* bonuses
+* tips
+
+* authorized adjustments.
+
+This is a configurable model, not a claim that any particular rates are appropriate for Zambia.
+
+Show riders the expected pay before they accept a job whenever possible.
+
+9.7 Rider support and safety
+
+Include:
+
+* Emergency contact information.
+* Incident reporting.
+* Customer-unavailable workflow.
+* Merchant-closed workflow.
+* Damaged-goods reporting.
+* Failed-delivery procedure.
+* Rider help center.
+* Support ticket creation.
+* Delivery reassignment rules.
+
+Do not implement an unverified emergency-service integration. Display appropriate local emergency guidance without claiming the app has contacted authorities unless that action has actually succeeded.
+
+⸻
+
+10. ADMINISTRATOR AND OPERATIONS DASHBOARD
+
+Create a powerful desktop-first admin dashboard that is also usable on tablets.
+
+This is the operational control center of Vayzo.
+
+10.1 Dashboard overview
+
+Display:
+
+* Total orders.
+* Orders awaiting merchant acceptance.
+* Orders being prepared.
+* Unassigned deliveries.
+* Active deliveries.
+* Delayed deliveries.
+* Completed deliveries.
+* Cancelled orders.
+* Gross merchandise value.
+* Platform revenue.
+* Estimated contribution margin.
+* Refunds.
+* Payment failures.
+* Merchant performance.
+* Rider availability.
+* Customer support backlog.
+
+Every metric must have a documented definition.
+
+Distinguish:
+
+* GMV.
+* Customer collections.
+* Merchant proceeds.
+* Delivery revenue.
+* Service-fee revenue.
+* Platform commission.
+* Refunds.
+* Operating expenses.
+* Contribution margin.
+* Net profit.
+
+Never label GMV as company revenue or revenue as profit.
+
+10.2 Order control center
+
+Provide:
+
+* Searchable orders table.
+* Filters.
+* Status updates.
+* Merchant details.
+* Rider assignment.
+* Payment state.
+* Customer details according to permissions.
+* Delivery information.
+* Order timeline.
+* Refund workflow.
+* Cancellation workflow.
+* Incident notes.
+* Audit trail.
+
+Require a reason for sensitive manual changes.
+
+Do not permit an administrator to silently overwrite a financial transaction.
+
+10.3 Merchant management
+
+Allow authorized staff to:
+
+* Review merchant applications.
+* Approve or reject applications.
+* Suspend merchants.
+* Manage merchant categories.
+* Review inventory quality.
+* Investigate complaints.
+* View merchant-specific operational performance.
+* Configure commission rates within authorized limits.
+* Review payout requests.
+
+Record the actor, timestamp, reason, and before/after values for important changes.
+
+10.4 Rider management
+
+Allow authorized staff to:
+
+* Review applications.
+* Approve or reject riders.
+* Review verification status.
+* Monitor active assignments.
+* Reassign deliveries when justified.
+* Investigate incidents.
+* Review performance.
+* Review earnings records.
+* Manage documented restrictions.
+* Process eligible payout requests.
+
+Sensitive rider actions require permissions and audit logging.
+
+10.5 Financial control center
+
+Build a financial ledger and reconciliation interface.
+
+Track:
+
+* Customer payments.
+* Payment-provider references.
+* Merchant obligations.
+* Rider obligations.
+* Platform fees.
+* Refunds.
+* Settlement batches.
+* Payouts.
+* Reversals.
+* Unreconciled transactions.
+* Failed transactions.
+* Manual adjustments.
+
+Use immutable financial entries or an append-only ledger design for posted financial events.
+
+Corrections must use reversal or adjustment entries instead of silently rewriting posted transactions.
+
+Implement reconciliation reports and exception alerts.
+
+10.6 Delivery operations
+
+Build:
+
+* Live operational order list.
+* Map-based view when maps are configured.
+* Unassigned-order queue.
+* Rider availability.
+* Delayed-order alerts.
+* Manual dispatch.
+* Delivery reassignment.
+* Zone management.
+* Delivery-fee configuration.
+* Rider-capacity configuration.
+
+Provide a list-based fallback if map integration is unavailable.
+
+10.7 Configuration
+
+Allow authorized administrators to configure:
+
+* Supported cities.
+* Delivery zones.
+* Delivery fees.
+* Distance rates.
+* Minimum basket values.
+* Merchant commissions.
+* Service fees.
+* Rider compensation.
+* Operating hours.
+* Cancellation policies.
+* Refund policies.
+* Promotional rules.
+* Category availability.
+* Feature flags.
+
+Require confirmation for consequential configuration changes.
+
+Log changes and provide safe defaults.
+
+10.8 Support and moderation
+
+Create a support ticket system with:
+
+* Ticket categories.
+* Priority.
+* Assigned agent.
+* Related order.
+* Messages.
+* Status.
+* Internal notes.
+* Resolution.
+* Escalation.
+
+Add review moderation, suspicious-order investigations, and merchant complaint workflows.
+
+Use AI to assist staff, not replace due process.
+
+⸻
+
+11. BUSINESS MODEL AND UNIT ECONOMICS
+
+Vayzo must be designed around sustainable unit economics.
+
+Do not assume that the company earns all money paid by the customer.
+
+A grocery order may include:
+
+1. Product value belonging to the merchant.
+2. A delivery fee.
+3. An optional platform service fee.
+4. A merchant commission withheld under an agreed contract.
+5. Promotional discounts.
+6. Payment processing costs.
+7. Refunds and chargebacks.
+8. Rider compensation.
+9. Other variable operating costs.
+
+These amounts must be represented separately.
+
+11.1 Example order calculation
+
+Create a configurable financial calculator.
+
+Use the following example for testing only:
+
+Product subtotal: K800.
+Delivery fee charged to customer: K25.
+Platform service fee: K5.
+Merchant commission: 8% of eligible product sales.
+Rider delivery compensation: K18.
+Payment processing cost: K0 for the initial demonstration, but support configurable actual costs.
+Promotional discount: K0.
+
+Assume the merchant commission is withheld from the merchant’s product proceeds and is not charged twice.
+
+Then:
+
+Customer total = K800 + K25 + K5 = K830.
+
+Merchant commission = 8% × K800 = K64.
+
+Merchant net proceeds before other merchant-specific adjustments = K800 - K64 = K736.
+
+Platform delivery revenue = K25.
+
+Platform service-fee revenue = K5.
+
+Platform commission revenue = K64.
+
+Total gross platform revenue under this example = K94.
+
+Rider compensation expense = K18.
+
+Platform contribution before all other variable costs and overhead = K94 - K18 = K76.
+
+This K76 is not net profit.
+
+It excludes any applicable taxes, payment costs, customer support costs, refunds, discounts funded by the platform, insurance, marketing, technology costs, delivery failures, and other expenses.
+
+Implement this example in a clearly labeled demonstration environment and write automated tests that verify the arithmetic.
+
+Allow authorized administrators to configure the actual commercial terms.
+
+Do not hardcode these example rates as the recommended real-world pricing model.
+
+11.2 Financial formulas
+
+Implement clear formulas.
+
+Customer payable =
+eligible product subtotals
+
+* delivery charges
+* platform service fees
+* applicable taxes
+
+* applicable discounts.
+
+Merchant proceeds =
+eligible product sales
+
+* merchant-funded discounts
+* agreed merchant commission
+* applicable refunds and adjustments
+
+* applicable corrections.
+
+Platform revenue =
+recognized merchant commissions
+
+* eligible delivery revenue
+* eligible service-fee revenue
+* other approved platform revenue.
+
+Rider compensation =
+configured base pay
+
+* eligible distance pay
+* approved bonuses
+* tips
+* eligible waiting compensation
+
+* authorized adjustments.
+
+Contribution margin =
+recognized platform revenue
+
+* attributable variable costs.
+
+Define when revenue is recognized and how refunds, reversals, and cancellations affect it.
+
+Avoid double counting the delivery fee, merchant commission, or payment collection.
+
+Separate money collected from money earned.
+
+Use integer minor units or a suitable decimal-money library for currency calculations. Never use ordinary floating-point arithmetic for authoritative financial totals.
+
+Display ZMW amounts consistently.
+
+11.3 Financial simulation
+
+Build an admin-only scenario calculator that can vary:
+
+* Daily order volume.
+* Average basket value.
+* Commission percentage.
+* Delivery fee.
+* Service fee.
+* Rider compensation.
+* Payment costs.
+* Refund rate.
+* Customer acquisition cost.
+* Marketing spending.
+* Variable support costs.
+* Monthly fixed costs.
+
+Calculate:
+
+* GMV.
+* Platform revenue.
+* Variable costs.
+* Contribution margin.
+* Contribution per order.
+* Monthly operating result under the selected assumptions.
+* Approximate break-even order volume.
+
+Label projections as scenarios, not forecasts.
+
+Include optimistic, base, and downside scenarios.
+
+Do not suggest that a business will be profitable without validating its assumptions against actual pilot data.
+
+⸻
+
+12. ZAMBIAN MARKET ADAPTATION
+
+Design the platform for real operating conditions in Zambia.
+
+12.1 Currency and prices
+
+Use ZMW as the default currency.
+
+Display prices consistently, for example:
+K25.00.
+
+Use server-side currency calculations.
+
+Do not assume exchange rates or international prices are fixed.
+
+12.2 Payments
+
+Build a modular payment architecture for:
+
+* MTN Mobile Money.
+* Airtel Money.
+* Cards.
+* Cash on delivery where operationally appropriate.
+
+Each payment provider should have:
+
+* A server-side adapter.
+* Payment initiation.
+* Payment status retrieval.
+* Verified webhook handling.
+* Idempotency.
+* Failure handling.
+* Refund support where available.
+* Reconciliation.
+* Configuration documentation.
+
+If a provider cannot be connected without merchant approval or credentials, provide a development adapter and an explicit integration checklist.
+
+Do not mark a payment successful solely because the customer returned from a payment page.
+
+For cash on delivery, track cash collected, amount due, rider cash exposure, and reconciliation.
+
+Support limits on cash-on-delivery orders to reduce fraud and collection risk.
+
+12.3 Addresses and delivery zones
+
+Support:
+
+* City.
+* Township or neighborhood.
+* Street.
+* House or building details.
+* Landmark.
+* Delivery instructions.
+* Map pin.
+* Phone contact.
+
+Do not require every customer to have a standardized street address.
+
+Use configurable service zones.
+
+Do not accept an order for delivery outside the supported service area unless the business explicitly permits it.
+
+12.4 Connectivity
+
+Optimize for unreliable or expensive mobile data.
+
+Include:
+
+* Small initial payloads.
+* Lazy-loaded imagery.
+* Compressed assets.
+* Pagination.
+* Efficient Firestore queries.
+* Loading and retry states.
+* Local persistence for cart data.
+* Safe recovery from interrupted checkout.
+
+Allow read-only access to previously loaded information where appropriate.
+
+Do not allow offline clients to finalize financial transactions without server confirmation.
+
+12.5 Time and operations
+
+Use a consistent server-side timestamp strategy.
+
+Display local dates and times appropriately for Zambia.
+
+Configure business operating hours and delivery windows.
+
+Support scheduled operations and holidays through configuration.
+
+12.6 Legal and compliance readiness
+
+Design the system to support compliance with applicable Zambian laws and regulations, including relevant requirements concerning:
+
+* Personal data protection.
+* Electronic commerce.
+* Consumer protection.
+* Tax and invoicing.
+* Payments.
+* Merchant agreements.
+* Worker and contractor arrangements.
+* Food safety.
+* Regulated product categories.
+
+Do not claim that Vayzo is legally compliant simply because these features exist.
+
+Create an administrative compliance checklist and configurable policy documents for review by qualified Zambian advisers.
+
+Do not launch regulated product categories until the applicable permissions and safeguards have been verified.
+
+⸻
+
+13. DATABASE DESIGN
+
+Create a documented Firestore data model.
+
+Use clear collection names and references.
+
+The model should cover at least:
+
+* users
+* userProfiles
+* roles
+* permissions
+* merchants
+* merchantMembers
+* merchantVerification
+* riders
+* riderVerification
+* addresses
+* deliveryZones
+* categories
+* products
+* productVariants
+* inventory
+* inventoryMovements
+* productReviews
+* merchantReviews
+* riderReviews
+* carts
+* shoppingLists
+* orders
+* orderItems
+* orderEvents
+* deliveryTasks
+* deliveryAssignments
+* locationUpdates
+* payments
+* paymentEvents
+* refunds
+* financialLedgerEntries
+* merchantSettlements
+* riderSettlements
+* payouts
+* promotions
+* promotionRedemptions
+* loyaltyAccounts
+* loyaltyTransactions
+* referralRecords
+* supportTickets
+* supportMessages
+* notifications
+* deviceTokens
+* aiConversations
+* aiUsageEvents
+* auditLogs
+* applicationSettings
+* featureFlags
+
+You may adapt the structure if a better Firestore design is justified.
+
+Do not create excessive duplication without a clear reason.
+
+Use denormalized summary fields only where they improve performance and are maintained consistently.
+
+Database requirements
+
+1. Use server timestamps.
+2. Validate document ownership.
+3. Prevent unauthorized cross-merchant access.
+4. Use pagination for large collections.
+5. Create required composite indexes.
+6. Avoid unbounded subcollections and arrays.
+7. Define retention policies for sensitive data.
+8. Minimize unnecessary personal data.
+9. Use transactions for critical operations.
+10. Use idempotency for retried requests.
+11. Make order events auditable.
+12. Keep posted financial entries immutable.
+13. Document data ownership and deletion behavior.
+14. Protect against enumeration and unauthorized queries.
+15. Never assume that hiding a UI element is an authorization mechanism.
+
+Create and test Firestore security rules.
+
+If the environment cannot provision a Firebase service automatically, generate the required configuration and give precise setup instructions.
+
+⸻
+
+14. SECURITY ARCHITECTURE
+
+Security is a core product requirement.
+
+Implement:
+
+* Firebase Authentication.
+* Server-side authorization.
+* Role-based access control.
+* Least-privilege permissions.
+* Input validation.
+* Output encoding.
+* Secure file uploads.
+* Request rate limiting.
+* Authentication checks on protected API routes.
+* Protection against unauthorized object access.
+* Safe error messages.
+* Secret management.
+* Secure webhook verification.
+* Idempotent payment and order operations.
+* Audit logging.
+* Session management.
+* Abuse prevention.
+* Sensitive-data minimization.
+
+Use schema validation for incoming API requests.
+
+Validate all prices, quantities, roles, merchant IDs, order IDs, delivery assignments, and payment references server-side.
+
+Never accept financial totals or authorization claims directly from the browser without verification.
+
+Do not expose secrets through:
+
+* Frontend environment variables.
+* Browser bundles.
+* Console logs.
+* API responses.
+* Public database documents.
+
+Use the server-side Gemini integration.
+
+Implement Firebase App Check where appropriate and supported.
+
+For uploaded documents, restrict access to authorized reviewers.
+
+Do not store unnecessary copies of identity documents.
+
+Create an authorization matrix covering customer, merchant, rider, support agent, finance administrator, operations administrator, and super administrator.
+
+Administrative access should be granted only to authorized accounts.
+
+Require additional verification or approval for sensitive financial operations when supported.
+
+Create an audit trail for:
+
+* Role changes.
+* Merchant approvals.
+* Rider approvals.
+* Refunds.
+* Payouts.
+* Financial adjustments.
+* Commission changes.
+* Pricing configuration.
+* Order overrides.
+* Account suspensions.
+
+Do not log passwords, payment credentials, authentication tokens, or unnecessary sensitive information.
+
+⸻
+
+15. ORDER STATE MACHINE AND EVENT ARCHITECTURE
+
+Implement a documented order lifecycle.
+
+Possible transitions include:
+
+CREATED
+→ PAYMENT_PENDING
+→ CONFIRMED
+→ MERCHANT_ACCEPTED
+→ PREPARING
+→ READY_FOR_PICKUP
+→ RIDER_ASSIGNED
+→ PICKED_UP
+→ IN_TRANSIT
+→ DELIVERED.
+
+Support appropriate branches for:
+
+* Payment failure.
+* Merchant rejection.
+* Customer cancellation.
+* Merchant cancellation.
+* Rider reassignment.
+* Failed delivery.
+* Partial fulfilment if explicitly supported.
+* Refund initiation.
+* Refund completion.
+
+Do not allow invalid transitions.
+
+Use a central order service rather than scattering order state changes across components.
+
+Every important transition should:
+
+1. Validate the current state.
+2. Validate the actor’s permission.
+3. Record an event.
+4. Update authoritative state.
+5. Trigger permitted side effects.
+6. Handle failures safely.
+7. Prevent duplicate execution.
+
+Use background tasks or a reliable outbox pattern where appropriate for:
+
+* Notifications.
+* Dispatch requests.
+* Settlement processing.
+* Analytics events.
+
+Do not assume that a background action succeeded until success has been recorded.
+
+Design the system so retries do not create duplicate orders, payments, notifications, or payouts.
+
+⸻
+
+16. NOTIFICATIONS AND COMMUNICATION
+
+Build a notification center for:
+
+* Order confirmations.
+* Payment status.
+* Merchant acceptance.
+* Order preparation.
+* Rider assignment.
+* Delivery progress.
+* Delivery completion.
+* Refund status.
+* Merchant stock warnings.
+* Rider delivery offers.
+* Settlement notifications.
+* Support ticket updates.
+
+Support in-app notifications first.
+
+Architect optional integration adapters for:
+
+* Push notifications.
+* Email.
+* SMS.
+* Approved messaging providers.
+
+Do not claim that an SMS, WhatsApp message, or email has been sent unless the configured provider confirms the result.
+
+Use templates and appropriate rate limits.
+
+Respect customer notification preferences.
+
+Avoid sending sensitive personal information in push-notification previews.
+
+⸻
+
+17. RECOMMENDATIONS AND INTELLIGENCE
+
+Create a recommendation engine that can begin with simple rules and improve as reliable data becomes available.
+
+Initial signals may include:
+
+* Product popularity.
+* Availability.
+* Customer-selected preferences.
+* Previously purchased products.
+* Merchant proximity.
+* Price.
+* Basket compatibility.
+* Delivery eligibility.
+* Product ratings.
+* Promotion eligibility.
+
+Do not use protected or sensitive personal characteristics to rank customers or determine prices.
+
+Do not invent personalized data.
+
+Provide a non-personalized fallback when a customer is new or has disabled personalization.
+
+Create analytics events that measure:
+
+* Product impressions.
+* Search queries.
+* Product clicks.
+* Add-to-cart events.
+* Checkout starts.
+* Completed orders.
+* Abandoned checkouts.
+* Reorders.
+* AI assistant usage.
+
+Do not record unnecessary sensitive text or private information in analytics events.
+
+Use analytics to improve conversion, inventory planning, and customer experience.
+
+⸻
+
+18. OPERATIONAL EXCELLENCE
+
+Build features that help the business function in the real world.
+
+18.1 Merchant reliability
+
+Track:
+
+* Acceptance time.
+* Preparation time.
+* Stock accuracy.
+* Cancellation rate.
+* Customer complaints.
+* Review scores.
+
+Use metrics to identify operational issues.
+
+Do not automatically suspend merchants based solely on one noisy metric.
+
+18.2 Rider reliability
+
+Track:
+
+* Assignment acceptance.
+* Pickup punctuality.
+* Delivery punctuality.
+* Completed deliveries.
+* Reported incidents.
+* Customer feedback.
+* Location update freshness.
+
+Consider context and fairness before taking action.
+
+18.3 Delivery efficiency
+
+Estimate:
+
+* Cost per delivery.
+* Delivery time.
+* Rider utilization.
+* Failed delivery rate.
+* Orders per rider.
+* Delivery cost as a percentage of order value.
+
+Build a configurable dispatch engine that can evolve from manual assignment to semi-automated and eventually more advanced routing.
+
+18.4 Fraud detection
+
+Create explainable risk signals for:
+
+* Repeated failed orders.
+* Suspicious promotional redemption.
+* Unusual payment behavior.
+* Duplicate transactions.
+* Fake review patterns.
+* Merchant inventory manipulation.
+* Unusual payout activity.
+* Repeated customer claims.
+
+Use risk scores to prioritize investigation.
+
+Do not automatically seize money, permanently ban users, or deny legitimate refunds solely because an AI model raises a suspicion.
+
+Require human review for consequential enforcement decisions.
+
+⸻
+
+19. DEVELOPMENT, DEMONSTRATION AND TESTING MODES
+
+The application must support development without misleading anyone about its capabilities.
+
+Create clear environment modes:
+
+DEVELOPMENT:
+
+* Seeded demonstration data.
+* Clearly labeled simulated payment providers.
+* Simulated location data where necessary.
+* Test users and test orders.
+* Development-only tools.
+
+PRODUCTION:
+
+* Real authentication.
+* Real database.
+* Configured payment providers.
+* Configured notifications.
+* Actual inventory.
+* Actual order records.
+* Proper permissions.
+* No exposed development controls.
+
+Never enable a simulated payment adapter in production by default.
+
+Never let demonstration records appear to be real transactions.
+
+Use environment configuration and server-side safeguards.
+
+Create a setup guide that explains how to configure and verify each integration.
+
+⸻
+
+20. TESTING REQUIREMENTS
+
+Create automated tests for critical business logic.
+
+At minimum, test:
+
+Financial calculations
+
+* The K800 example order.
+* Commission calculation.
+* Delivery-fee accounting.
+* Service-fee accounting.
+* Discounts.
+* Refunds.
+* Rounding.
+* Negative or invalid quantities.
+* Duplicate ledger entries.
+* Merchant settlement.
+* Rider earnings.
+
+Inventory
+
+* Successful stock reservation.
+* Insufficient inventory.
+* Concurrent checkout.
+* Order cancellation and stock release.
+* Product price changes during checkout.
+
+Orders
+
+* Valid order creation.
+* Duplicate request handling.
+* Invalid state transitions.
+* Merchant rejection.
+* Rider reassignment.
+* Delivery confirmation.
+* Refund workflow.
+
+Authorization
+
+* Customers cannot access another customer’s private order data.
+* Merchants cannot access other merchants’ private data.
+* Riders cannot access unassigned delivery information.
+* Unauthorized users cannot use admin APIs.
+* Only permitted users can process financial operations.
+
+AI
+
+* Product lookup uses real catalog data.
+* Invented prices are rejected.
+* AI-generated actions require validation.
+* Unauthorized actions are denied.
+* Gemini failures trigger safe fallback behavior.
+* Rate limits work.
+
+Payments
+
+* Duplicate webhook handling.
+* Invalid webhook signatures.
+* Pending payments.
+* Failed payments.
+* Successful payment confirmation.
+* Refund and reversal handling.
+
+User experience
+
+* Mobile navigation.
+* Empty states.
+* Loading states.
+* Form validation.
+* Cart persistence.
+* Checkout error recovery.
+* Accessible controls.
+
+Use unit tests, integration tests, and end-to-end tests where the available environment supports them.
+
+Run the available test suite.
+
+Fix build errors, runtime errors, broken imports, and obvious layout problems.
+
+Do not claim tests passed unless they were actually executed.
+
+⸻
+
+21. PERFORMANCE AND SCALABILITY
+
+Design the system to grow without unnecessary early complexity.
+
+Prioritize:
+
+* Efficient database queries.
+* Pagination.
+* Lazy loading.
+* Image optimization.
+* Caching of safe public catalog data.
+* Server-side filtering.
+* Reusable components.
+* Appropriate indexes.
+* Rate limiting.
+* Background processing for slow operations.
+* Separation of business logic from presentation.
+* Clear service boundaries.
+
+Avoid:
+
+* Loading the entire catalog into the browser.
+* Unbounded real-time database listeners.
+* Expensive database queries on every render.
+* Large 3D models loaded on the initial homepage.
+* Running unnecessary AI requests.
+* Duplicating payment or order logic across multiple components.
+
+Use real-time listeners selectively for active orders and operational workflows.
+
+Make expensive features optional when the device or network cannot support them.
+
+Design for an initial pilot, with a documented path to larger traffic volumes.
+
+Do not claim that the system has been load-tested unless actual load tests have been run.
+
+⸻
+
+22. PRODUCT ANALYTICS AND BUSINESS INTELLIGENCE
+
+Create a business analytics layer.
+
+Track:
+
+* Registered customers.
+* Active customers.
+* New customers.
+* Customer retention.
+* Repeat purchase rate.
+* Average order value.
+* Conversion rate.
+* Orders per day.
+* GMV.
+* Recognized platform revenue.
+* Contribution margin.
+* Merchant retention.
+* Rider utilization.
+* Average delivery time.
+* Delivery success rate.
+* Refund rate.
+* Payment success rate.
+* AI usage and cost.
+
+Document each metric’s definition and source.
+
+Support time filters:
+
+* Today.
+* Last 7 days.
+* Last 30 days.
+* Custom period.
+
+Distinguish missing data from zero.
+
+Do not populate production analytics with fabricated numbers.
+
+Seeded demonstrations must be clearly labeled.
+
+⸻
+
+23. APPLICATION PAGES
+
+Implement actual navigation and page components for the following.
+
+CUSTOMER:
+
+* Home.
+* Search.
+* Categories.
+* Merchant discovery.
+* Merchant storefront.
+* Product detail.
+* 3D product viewer.
+* Shopping cart.
+* Checkout.
+* Payment status.
+* Order confirmation.
+* Order tracking.
+* Order history.
+* Saved addresses.
+* Shopping lists.
+* Reorders.
+* Vayzo AI.
+* Offers.
+* Favorites.
+* Ratings and reviews.
+* Notifications.
+* Help and support.
+* Account settings.
+
+MERCHANT:
+
+* Overview.
+* Orders.
+* Order detail.
+* Products.
+* Product editor.
+* Inventory.
+* Stock movements.
+* 3D model manager.
+* Promotions.
+* Reviews.
+* Analytics.
+* Financials.
+* Settlements.
+* Business profile.
+* Staff and permissions.
+* Vayzo Merchant AI.
+* Support.
+
+RIDER:
+
+* Overview.
+* Go online/offline.
+* Available deliveries.
+* Active delivery.
+* Pickup details.
+* Delivery navigation.
+* Delivery confirmation.
+* Earnings.
+* Payout history.
+* Performance.
+* Notifications.
+* Incident reporting.
+* Support.
+* Account and verification.
+
+ADMIN:
+
+* Executive dashboard.
+* Orders.
+* Dispatch operations.
+* Map view.
+* Customers.
+* Merchants.
+* Merchant applications.
+* Riders.
+* Rider applications.
+* Products.
+* Categories.
+* Delivery zones.
+* Promotions.
+* Payments.
+* Refunds.
+* Financial ledger.
+* Merchant settlements.
+* Rider payouts.
+* Reconciliation.
+* Support tickets.
+* Reviews and moderation.
+* Fraud investigations.
+* AI copilot.
+* Analytics.
+* Pricing configuration.
+* Commission configuration.
+* Permissions.
+* Audit logs.
+* Feature flags.
+* System settings.
+
+Do not create empty pages merely to satisfy this list.
+
+Where a feature is not yet fully implemented, provide an honest status and a useful next action.
+
+⸻
+
+24. SEED DATA AND DEMONSTRATION ACCOUNTS
+
+Create realistic fictional seed data for development.
+
+Include:
+
+* Several fictional merchants.
+* Grocery products.
+* Fresh produce.
+* Packaged food.
+* Household essentials.
+* Product images or placeholders.
+* Some illustrative 3D models if suitable assets are available.
+* Orders in different states.
+* Example riders.
+* Example customer accounts.
+* Example promotions.
+* Sample reviews.
+* Example support tickets.
+* Example financial ledger entries.
+
+Make clear that all seeded data is fictional.
+
+Never fabricate real customer testimonials or claim that fictional merchants are actual operating businesses.
+
+Create a safe method for generating demonstration records.
+
+Do not automatically grant administrative access to arbitrary public accounts.
+
+Document how the owner can securely provision the first administrator.
+
+⸻
+
+25. IMPLEMENTATION STRATEGY
+
+Do not try to make every advanced feature production-ready in one pass if doing so would make the entire application unstable.
+
+Build in coherent phases while maintaining one consistent architecture.
+
+PHASE 1: FOUNDATION
+
+Implement:
+
+* Application structure.
+* Design system.
+* Firebase integration.
+* Authentication.
+* User roles.
+* Firestore data model.
+* Security rules.
+* Seed data.
+* Customer storefront.
+* Product catalog.
+* Search.
+* Cart.
+* Single-merchant checkout.
+* Order state machine.
+* Merchant dashboard.
+* Rider dashboard.
+* Admin dashboard.
+* Development-mode simulation.
+
+PHASE 2: TRANSACTIONS AND OPERATIONS
+
+Implement:
+
+* Inventory reservations.
+* Order processing.
+* Merchant fulfilment.
+* Rider assignment.
+* Delivery status updates.
+* Notifications.
+* Financial ledger.
+* Merchant commission calculations.
+* Rider earnings.
+* Refund workflows.
+* Ratings and reviews.
+* Operational analytics.
+
+PHASE 3: AI AND ADVANCED COMMERCE
+
+Implement:
+
+* Gemini customer assistant.
+* Catalog-grounded AI search.
+* Budget-based shopping.
+* Merchant AI assistant.
+* Admin AI copilot.
+* Product recommendations.
+* 3D product viewer.
+* Merchant model uploads.
+* Shopping lists.
+* Reordering.
+* Promotions.
+* Loyalty and referrals.
+
+PHASE 4: EXTERNAL INTEGRATIONS
+
+Implement and verify, when credentials and provider access are available:
+
+* Mobile money.
+* Card payments.
+* Maps and routing.
+* Push notifications.
+* Email and SMS.
+* Production storage.
+* Monitoring.
+* Settlement integrations.
+
+PHASE 5: HARDENING AND LAUNCH READINESS
+
+Complete:
+
+* Security testing.
+* Permission testing.
+* Financial reconciliation tests.
+* Performance checks.
+* Mobile usability checks.
+* Error handling.
+* Operational documentation.
+* Deployment configuration.
+* Backup and recovery planning.
+* Privacy and compliance review checklist.
+
+This phasing is an implementation strategy, not permission to leave the initial application as a static mockup.
+
+Start by building the strongest coherent full-stack foundation, then implement as many working features as the environment safely supports.
+
+⸻
+
+26. CODE QUALITY AND MAINTAINABILITY
+
+Use a maintainable directory structure.
+
+Separate:
+
+* UI components.
+* Pages.
+* Authentication.
+* API routes.
+* Business services.
+* Database access.
+* Financial calculations.
+* Order state transitions.
+* Payment adapters.
+* Dispatch logic.
+* AI integrations.
+* Validation schemas.
+* Shared types.
+* Tests.
+* Configuration.
+
+Avoid giant single-file implementations.
+
+Use TypeScript types and validation schemas.
+
+Centralize important business rules.
+
+Write clear comments for complex financial and operational logic.
+
+Create reusable service interfaces.
+
+Avoid hardcoding provider credentials, rates, commissions, secrets, or business policies.
+
+Use feature flags for unfinished advanced functionality.
+
+Create a README with:
+
+* Architecture overview.
+* Setup instructions.
+* Required environment variables.
+* Firebase setup.
+* AI configuration.
+* Payment integration status.
+* Maps integration status.
+* Database schema.
+* Security notes.
+* Test commands.
+* Deployment instructions.
+* Known limitations.
+* Production-readiness checklist.
+
+⸻
+
+27. ACCEPTANCE CRITERIA
+
+Before declaring the application complete, verify the following.
+
+1. The application launches successfully.
+2. The frontend renders correctly.
+3. Core routes are functional.
+4. Authentication works through the configured provider.
+5. Protected routes enforce authorization.
+6. Users see role-appropriate dashboards.
+7. Products can be loaded from persistent storage.
+8. Authorized merchants can manage their products.
+9. Customers can create and update a cart.
+10. Server-side checkout calculates authoritative totals.
+11. Orders persist in the database.
+12. Duplicate order submissions are handled safely.
+13. Inventory cannot be oversold through ordinary concurrent checkout.
+14. Merchants can process valid orders.
+15. Riders can manage authorized delivery assignments.
+16. Order transitions are validated.
+17. The financial example produces the expected results.
+18. Financial records can be audited.
+19. Ratings require eligible completed purchases.
+20. Gemini requests use the secure server-side integration.
+21. AI responses do not invent catalog prices or stock.
+22. The 3D viewer has an image fallback.
+23. Admin APIs enforce permissions.
+24. Development simulations are clearly labeled.
+25. External integrations are accurately reported as connected, simulated, or awaiting configuration.
+26. Errors are handled gracefully.
+27. Mobile layouts are usable.
+28. The project includes documentation.
+29. Automated tests are run wherever supported.
+30. Known defects and incomplete features are explicitly reported.
+
+Do not falsely claim an acceptance criterion has passed if it has not been tested.
+
+⸻
+
+28. FINAL BUILD INSTRUCTIONS
+
+Begin implementation immediately.
+
+First, inspect the available Google AI Studio environment and select a compatible architecture.
+
+Then:
+
+1. Create the project structure.
+2. Set up the frontend and backend.
+3. Request and configure Firebase integration when required.
+4. Build the core design system.
+5. Implement authentication and authorization.
+6. Implement the database model and security rules.
+7. Build the customer storefront.
+8. Build merchant, rider, and admin experiences.
+9. Implement the order lifecycle.
+10. Implement the financial ledger and calculations.
+11. Add Gemini through the secure server-side API.
+12. Add the 3D product viewer and image fallback.
+13. Implement testing.
+14. Run the application.
+15. Inspect and fix errors.
+16. Complete the project documentation.
+
+Do not stop after generating a plan.
+
+Do not stop after creating the homepage.
+
+Do not replace working business logic with decorative buttons.
+
+Do not invent successful external integrations.
+
+Do not ask me questions before beginning.
+
+Use your best judgment to resolve minor ambiguities.
+
+If the complete scope exceeds the available implementation budget or context, prioritize a functioning, secure, extensible core and continue in logical phases without discarding previous work.
+
+At the end, provide a concise implementation report stating:
+
+* What is actually implemented.
+* Which features use persistent storage.
+* Which user journeys have been tested.
+* Which automated tests have passed.
+* Which features remain incomplete.
+* Which external credentials are required.
+* Which integrations are simulated.
+* How to run the app.
+* How to deploy it.
+* What must happen before real customers can use it safely.
+
+The final objective is not an impressive-looking demo.
+
+The final objective is a technically sound, commercially intelligent, extensible Vayzo platform that can be developed into a real business serving Zambia.
+
+BUILD VAYZO NOW.

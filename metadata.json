@@ -1,0 +1,6 @@
+{
+  "name": "Vayzo - AI Commerce & Delivery",
+  "description": "AI-powered multi-vendor grocery, retail and last-mile delivery platform for Zambia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
