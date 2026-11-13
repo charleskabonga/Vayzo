@@ -1,21 +1,427 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
-    <title>Vayzo - Retail, Grocery & Food Delivery | Lusaka, Zambia</title>
-    <meta name="description" content="Order from Shoprite, Pick n Pay, Hungry Lion and Lusaka local stores with dual mobile money & cash on delivery." />
-    <meta property="og:title" content="Vayzo - Retail, Grocery & Food Delivery | Lusaka, Zambia" />
-    <meta property="og:description" content="Order from Shoprite, Pick n Pay, Hungry Lion and Lusaka local stores with dual mobile money & cash on delivery." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-  </head>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vayzo — Groceries, delivered</title>
+<style>
+:root{--green:#176b4d;--green2:#e8f5ee;--ink:#17231e;--muted:#69756f;--line:#e5ebe7;--bg:#f7faf8;--white:#fff;--orange:#f4a340}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:650}
+.primary{background:var(--green);color:white}.secondary{background:var(--green2);color:var(--green)}.outline{background:white;border:1px solid var(--line);color:var(--ink)}
+header{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100% - 1180px)/2));position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:850;letter-spacing:-1.2px;color:var(--green)}.logo span{color:var(--orange)}nav{display:flex;gap:8px;flex-wrap:wrap}.navbtn{background:transparent;color:var(--muted);padding:9px 11px}.navbtn.active{background:var(--green2);color:var(--green)}
+.town-selector{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--green2);color:var(--green);font-weight:700}
+main{max-width:1180px;margin:0 auto;padding:26px 18px 70px}.hero{background:linear-gradient(115deg,#e7f4ec,#f8fbf8);border:1px solid #dcece2;border-radius:24px;padding:34px;display:grid;grid-template-columns:1.4fr .8fr;gap:20px;align-items:center}.eyebrow{font-weight:750;color:var(--green);text-transform:uppercase;font-size:12px;letter-spacing:1.3px}.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.04;letter-spacing:-2px;margin:12px 0}.hero p{color:var(--muted);max-width:520px}.heroart{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.floatcard{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;box-shadow:0 12px 30px #173d2810}.emoji{font-size:44px;display:block;margin-bottom:6px}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:30px 0 15px}.sectionhead h2{margin:0;font-size:23px;letter-spacing:-.5px}.muted{color:var(--muted)}.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.product,.panel,.stat{background:white;border:1px solid var(--line);border-radius:18px;padding:16px}.productvisual{height:130px;background:linear-gradient(145deg,#f4f8f5,#e8f3ec);border-radius:13px;display:grid;place-items:center;font-size:56px;margin-bottom:13px;position:relative;overflow:hidden}.product h3{margin:0 0 3px;font-size:16px}.price{font-weight:800;font-size:18px}.productfoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.tag{display:inline-block;background:var(--green2);color:var(--green);padding:4px 8px;border-radius:99px;font-size:11px;font-weight:750}.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-weight:650;font-size:13px}.field input,.field select{border:1px solid var(--line);border-radius:10px;padding:11px;background:white;width:100%}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat strong{display:block;font-size:25px;margin-top:5px}.hidden{display:none!important}.notice{padding:12px 14px;background:#fff7e8;border:1px solid #f6e4c2;border-radius:12px;color:#7d5316;margin:12px 0}.success{background:#edf8f1;border-color:#cfe9d9;color:#1c6848}.listitem{padding:13px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}.listitem:last-child{border-bottom:0}.pill{border-radius:99px;background:#f1f4f2;padding:5px 9px;font-size:12px}.small{font-size:12px}.cartbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#17231e;color:white;border-radius:15px;padding:12px 17px;display:flex;gap:18px;align-items:center;box-shadow:0 10px 30px #0003;z-index:8;min-width:min(92vw,450px);justify-content:space-between}.cartbar button{background:#fff;color:#173d2b}.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:35px}
+@media(max-width:800px){header{height:auto;min-height:65px;align-items:flex-start;gap:10px;flex-direction:column;padding:13px 16px}nav{width:100%;overflow:auto;flex-wrap:nowrap}.hero{grid-template-columns:1fr;padding:24px}.heroart{grid-template-columns:repeat(4,1fr)}.floatcard{padding:10px 4px}.emoji{font-size:30px}.products{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.statgrid{grid-template-columns:1fr 1fr}.sectionhead{align-items:start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">vayzo<span>.</span></div>
+  <div class="row">
+    <label for="townSelect" class="small muted">Town:</label>
+    <select id="townSelect" class="town-selector">
+      <option value="">Loading towns...</option>
+    </select>
+  </div>
+  <nav id="nav">
+    <button class="navbtn active" data-page="shop">Shop</button>
+    <button class="navbtn" data-page="store">Store portal</button>
+    <button class="navbtn" data-page="driver">Driver portal</button>
+    <button class="navbtn" data-page="admin">Admin</button>
+  </nav>
+  <button class="outline" id="authBtn" onclick="toggleAuthModal()">Sign in</button>
+</header>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<main>
+<!-- SHOP PAGE -->
+<section id="shopPage">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Your neighbourhood, delivered</div>
+      <h1>Good groceries.<br>Less running around.</h1>
+      <p>Shop everyday essentials from local stores. Compare offers, order in minutes and get groceries delivered to your door.</p>
+      <div class="row">
+        <button class="primary" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Explore groceries</button>
+        <span class="muted small" id="activeTownBadge">Select a town</span>
+      </div>
+    </div>
+    <div class="heroart">
+      <div class="floatcard"><span class="emoji">🥑</span><b>Fresh picks</b></div>
+      <div class="floatcard"><span class="emoji">🥛</span><b>Daily basics</b></div>
+      <div class="floatcard"><span class="emoji">🍊</span><b>Special offers</b></div>
+      <div class="floatcard"><span class="emoji">🛵</span><b>Local delivery</b></div>
+    </div>
+  </div>
 
+  <div class="sectionhead" id="catalogue">
+    <div>
+      <div class="eyebrow">Hand-picked for your town</div>
+      <h2>Available groceries</h2>
+    </div>
+    <span class="muted small">Prices in ZMW</span>
+  </div>
+  
+  <div class="products" id="products">Loading products...</div>
+
+  <div class="sectionhead">
+    <div>
+      <div class="eyebrow">Checkout preview</div>
+      <h2>Your basket</h2>
+    </div>
+  </div>
+  <div class="panel" id="cart"><p class="muted">Your basket is empty. Add a product to start an order.</p></div>
+</section>
+
+<!-- STORE PORTAL -->
+<section id="storePage" class="hidden">
+  <div class="sectionhead">
+    <div><div class="eyebrow">Partner workspace</div><h2>Store portal</h2><p class="muted">Register your store, manage listings and review orders.</p></div>
+  </div>
+  <div class="layout">
+    <div class="panel">
+      <h3>Register a store</h3>
+      <div class="field"><label>Store name</label><input id="storeName" placeholder="e.g. Green Basket Market"></div>
+      <div class="field"><label>Store phone</label><input id="storePhone" placeholder="+260 ..."></div>
+      <div class="field"><label>Town / district</label><select id="storeTownSelect"></select></div>
+      <button class="primary" onclick="registerStore()">Submit store application</button>
+      <div id="storeMsg"></div>
+    </div>
+    <div class="panel">
+      <h3>Store overview</h3>
+      <div class="statgrid">
+        <div class="stat"><span class="muted small">Listings</span><strong>--</strong></div>
+        <div class="stat"><span class="muted small">Open orders</span><strong>--</strong></div>
+        <div class="stat"><span class="muted small">Offers</span><strong>--</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRIVER PORTAL -->
+<section id="driverPage" class="hidden">
+  <div class="sectionhead">
+    <div><div class="eyebrow">Independent driver network</div><h2>Drive with Vayzo</h2><p class="muted">Use your own vehicle. Apply to join and accept delivery jobs.</p></div>
+  </div>
+  <div class="layout">
+    <div class="panel">
+      <h3>Driver registration</h3>
+      <div class="field"><label>Phone number</label><input id="driverPhoneInput" placeholder="+260 ..."></div>
+      <div class="field"><label>Vehicle type</label><select id="vehicleType"><option>Motorbike</option><option>Car</option><option>Bicycle</option></select></div>
+      <div class="field"><label>Town / zone</label><select id="driverTownSelect"></select></div>
+      <button class="primary" onclick="registerDriver()">Submit driver application</button>
+      <div id="driverMsg"></div>
+    </div>
+    <div class="panel">
+      <h3>Available delivery jobs</h3>
+      <div class="notice">Sign in and select an approved town to view open delivery requests in your operational zone.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PAGE -->
+<section id="adminPage" class="hidden">
+  <div class="sectionhead">
+    <div><div class="eyebrow">Operations control</div><h2>Admin dashboard</h2><p class="muted">Review onboarding, monitor orders and view platform economics.</p></div>
+  </div>
+  <div class="statgrid">
+    <div class="stat"><span class="muted small">Total orders</span><strong id="adminOrderCount">0</strong></div>
+    <div class="stat"><span class="muted small">Active stores</span><strong id="adminStoreCount">0</strong></div>
+    <div class="stat"><span class="muted small">Towns active</span><strong id="adminTownCount">3</strong></div>
+  </div>
+</section>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="hidden" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99">
+  <div class="panel" style="width:100%;max-width:400px;background:white">
+    <h3 id="authTitle">Sign in to Vayzo</h3>
+    <div class="field"><label>Email address</label><input id="authEmail" type="email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input id="authPassword" type="password" placeholder="••••••••"></div>
+    <div class="row" style="justify-content:space-between;margin-top:15px">
+      <button class="primary" onclick="handleAuthSubmit()" id="authSubmitBtn">Sign in</button>
+      <button class="outline" onclick="toggleAuthModal()">Cancel</button>
+    </div>
+    <p class="muted small" style="margin-top:15px;text-align:center">
+      <span id="authSwitchText">Don't have an account?</span> 
+      <a href="#" onclick="switchAuthMode(event)" id="authSwitchLink" style="color:var(--green);font-weight:650">Sign up</a>
+    </p>
+    <div id="authMsg"></div>
+  </div>
+</div>
+
+<div class="footer">Vayzo Marketplace · Connected to Supabase backend.</div>
+</main>
+
+<div class="cartbar hidden" id="cartbar">
+  <span><b id="cartCount">0</b> items · <b id="cartTotal">K0.00</b></span>
+  <button onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">View basket</button>
+</div>
+
+<!-- SUPABASE INTEGRATION SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://YOUR_SUPABASE_PROJECT_ID.supabase.co';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  const { createClient } = supabase;
+  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let selectedTownId = null;
+  let products = [];
+  let cart = {};
+  let currentUser = null;
+  let isSignUpMode = false;
+
+  function money(n) { return "K" + Number(n).toFixed(2); }
+
+  async function initApp() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      document.getElementById('authBtn').textContent = currentUser.email.split('@')[0];
+    }
+
+    const { data: towns, error } = await supabaseClient
+      .from('towns')
+      .select('id, name, district, province')
+      .eq('is_active', true)
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('Error loading towns:', error.message);
+      document.getElementById('products').innerHTML = '<p class="muted">Failed to connect to backend towns table.</p>';
+      return;
+    }
+
+    const townSelect = document.getElementById('townSelect');
+    const storeTownSelect = document.getElementById('storeTownSelect');
+    const driverTownSelect = document.getElementById('driverTownSelect');
+    
+    if (towns && towns.length > 0) {
+      const optionsHtml = towns.map(t => `<option value="${t.id}">${t.name} (${t.province})</option>`).join('');
+      townSelect.innerHTML = optionsHtml;
+      if (storeTownSelect) storeTownSelect.innerHTML = optionsHtml;
+      if (driverTownSelect) driverTownSelect.innerHTML = optionsHtml;
+
+      selectedTownId = towns[0].id;
+      updateTownBadge(towns[0].name);
+      loadTownProducts(selectedTownId);
+
+      townSelect.onchange = (e) => {
+        selectedTownId = e.target.value;
+        const selectedTown = towns.find(t => t.id === selectedTownId);
+        if (selectedTown) updateTownBadge(selectedTown.name);
+        loadTownProducts(selectedTownId);
+      };
+    } else {
+      townSelect.innerHTML = '<option value="">No towns available</option>';
+    }
+  }
+
+  function updateTownBadge(name) {
+    document.getElementById('activeTownBadge').textContent = `Operating in ${name}`;
+  }
+
+  async function loadTownProducts(townId) {
+    const productsContainer = document.getElementById('products');
+    productsContainer.innerHTML = '<p class="muted">Loading available groceries for this town...</p>';
+
+    const { data: stores, error: storeErr } = await supabaseClient
+      .from('stores')
+      .select('id')
+      .eq('town_id', townId);
+
+    if (storeErr || !stores || stores.length === 0) {
+      productsContainer.innerHTML = '<p class="muted">No partner stores currently active in this town. Register your store in the Store portal!</p>';
+      products = [];
+      renderProducts();
+      return;
+    }
+
+    const storeIds = stores.map(s => s.id);
+
+    const { data: storeProducts, error: prodErr } = await supabaseClient
+      .from('products')
+      .select('id, name, price, description, store_id')
+      .in('store_id', storeIds)
+      .eq('is_active', true);
+
+    if (prodErr) {
+      console.error('Error loading products:', prodErr.message);
+      productsContainer.innerHTML = '<p class="muted">Error retrieving grocery listings.</p>';
+      return;
+    }
+
+    products = storeProducts || [];
+    renderProducts();
+  }
+
+  function renderProducts() {
+    const container = document.getElementById('products');
+    if (!products.length) {
+      container.innerHTML = '<p class="muted">No products listed in this town yet.</p>';
+      return;
+    }
+
+    container.innerHTML = products.map(p => `
+      <article class="product">
+        <div class="productvisual">🛒</div>
+        <h3 style="margin-top:8px">${p.name}</h3>
+        <div class="muted small">${p.description || 'Fresh item'}</div>
+        <div class="productfoot">
+          <span class="price">${money(p.price)}</span>
+          <button class="primary" onclick="addToCart('${p.id}')">Add +</button>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    renderCart();
+  }
+
+  function renderCart() {
+    let items = Object.entries(cart).filter(([id, q]) => q > 0);
+    let total = items.reduce((s, [id, q]) => {
+      let p = products.find(x => x.id === id);
+      return s + (p ? p.price * q : 0);
+    }, 0);
+
+    document.getElementById('cartbar').classList.toggle('hidden', !items.length);
+    document.getElementById('cartCount').textContent = items.reduce((s, [id, q]) => s + q, 0);
+    document.getElementById('cartTotal').textContent = money(total);
+
+    document.getElementById('cart').innerHTML = items.length ? items.map(([id, q]) => {
+      let p = products.find(x => x.id === id);
+      return `<div class="listitem"><span>🛒 ${p ? p.name : 'Item'} × ${q}</span><b>${money(p ? p.price * q : 0)}</b></div>`;
+    }).join('') + `
+      <div class="field"><label>Delivery address</label><input id="address" placeholder="e.g. Plot 12, Independence Avenue"></div>
+      <div class="field"><label>Payment method</label><select id="payment"><option>Cash on delivery</option><option>Mobile Money (Airtel / MTN)</option></select></div>
+      <button class="primary" onclick="placeOrder()">Place Order</button>
+      <div id="orderMsg"></div>
+    ` : '<p class="muted">Your basket is empty. Add a product to start an order.</p>';
+  }
+
+  async function placeOrder() {
+    if (!currentUser) {
+      alert('Please sign in to place an order.');
+      toggleAuthModal();
+      return;
+    }
+    let address = document.getElementById('address').value.trim();
+    if (!address) {
+      alert('Please enter a delivery address.');
+      return;
+    }
+
+    let items = Object.entries(cart).filter(([id, q]) => q > 0);
+    let subtotal = items.reduce((s, [id, q]) => s + (products.find(x => x.id === id)?.price || 0) * q, 0);
+    let storeId = products.find(x => x.id === items[0][0])?.store_id;
+
+    const { data: order, error } = await supabaseClient
+      .from('orders')
+      .insert({
+        customer_id: currentUser.id,
+        store_id: storeId,
+        town_id: selectedTownId,
+        subtotal: subtotal,
+        delivery_fee: 25.00,
+        total_amount: subtotal + 25.00,
+        delivery_address: address,
+        status: 'pending'
+      })
+      .select()
+      .single();
+
+    if (error) {
+      document.getElementById('orderMsg').innerHTML = `<div class="notice" style="color:red">Failed to place order: ${error.message}</div>`;
+      return;
+    }
+
+    document.getElementById('orderMsg').innerHTML = `<div class="notice success">Order VZ-${order.id.slice(0,6)} successfully placed! Status: Pending.</div>`;
+    cart = {};
+    renderCart();
+  }
+
+  async function registerStore() {
+    if (!currentUser) { alert('Please sign in first.'); toggleAuthModal(); return; }
+    let name = document.getElementById('storeName').value.trim();
+    let phone = document.getElementById('storePhone').value.trim();
+    let townId = document.getElementById('storeTownSelect').value;
+
+    if (!name || !phone) { alert('Please fill in all fields.'); return; }
+
+    const { error } = await supabaseClient.from('stores').insert({
+      owner_user_id: currentUser.id,
+      town_id: townId,
+      name: name,
+      phone: phone,
+      verification_status: 'pending'
+    });
+
+    if (error) {
+      document.getElementById('storeMsg').innerHTML = `<div class="notice" style="color:red">Error: ${error.message}</div>`;
+    } else {
+      document.getElementById('storeMsg').innerHTML = `<div class="notice success">Store registered successfully! Awaiting admin verification.</div>`;
+    }
+  }
+
+  async function registerDriver() {
+    if (!currentUser) { alert('Please sign in first.'); toggleAuthModal(); return; }
+    let phone = document.getElementById('driverPhoneInput').value.trim();
+    let vehicle = document.getElementById('vehicleType').value;
+    let townId = document.getElementById('driverTownSelect').value;
+
+    const { error } = await supabaseClient.from('drivers').insert({
+      user_id: currentUser.id,
+      town_id: townId,
+      vehicle_type: vehicle,
+      verification_status: 'pending',
+      is_available: true
+    });
+
+    if (error) {
+      document.getElementById('driverMsg').innerHTML = `<div class="notice" style="color:red">Error: ${error.message}</div>`;
+    } else {
+      document.getElementById('driverMsg').innerHTML = `<div class="notice success">Driver application submitted successfully!</div>`;
+    }
+  }
+
+  window.toggleAuthModal = function() {
+    const modal = document.getElementById('authModal');
+    modal.classList.toggle('hidden');
+  };
+
+  window.switchAuthMode = function(e) {
+    e.preventDefault();
+    isSignUpMode = !isSignUpMode;
+    document.getElementById('authTitle').textContent = isSignUpMode ? 'Create a Vayzo Account' : 'Sign in to Vayzo';
+    document.getElementById('authSubmitBtn').textContent = isSignUpMode ? 'Sign up' : 'Sign in';
+    document.getElementById('authSwitchText').textContent = isSignUpMode ? 'Already have an account?' : "Don't have an account?";
+    document.getElementById('authSwitchLink').textContent = isSignUpMode ? 'Sign in' : 'Sign up';
+  };
+
+  window.handleAuthSubmit = async function() {
+    let email = document.getElementById('authEmail').value.trim();
+    let password = document.getElementById('authPassword').value.trim();
+    let msgEl = document.getElementById('authMsg');
+
+    if (!email || !password) {
+      msgEl.innerHTML = '<span style="color:red">Enter email and password.</span>';
+      return;
+    }
+
+    if (isSignUpMode) {
+      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) {
+        msgEl.innerHTML = `<span style="color:red">${error.message}</span>`;
+      } else {
+        msgEl.innerHTML = '<span class="success">Account created! Check your email or sign in.</span>';
+      }
+    } else {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        msgEl.innerHTML = `<span style="color:red">${error.message}</span>`;
+      } else {
+        currentUser = data.user
