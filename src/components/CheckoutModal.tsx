@@ -21,6 +21,7 @@ import {
   Info
 } from 'lucide-react';
 import { CartItem, ZambianAddress, Order, VehicleOption, Merchant } from '../types';
+import type { AppAuthUser } from '../services/supabaseService';
 import { formatZMW, calculateYangoDualPayment } from '../utils/economics';
 import { getDistanceBetweenTownships } from '../utils/distance';
 import {
@@ -35,7 +36,7 @@ interface CheckoutModalProps {
   items: CartItem[];
   defaultTownship: string;
   onOrderPlaced: (order: Order) => void;
-  currentUser: any;
+  currentUser: AppAuthUser | null;
   merchants?: Merchant[];
   loyaltyPointsBalance?: number;
   onRedeemLoyaltyPoints?: (pointsDeducted: number) => void;
@@ -196,7 +197,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       const newOrder: Order = {
         id: orderId,
-        customerId: currentUser?.uid || 'guest_user',
+        customerId: currentUser?.id || 'guest_user',
         customerName: recipientName,
         customerPhone: recipientPhone,
         merchantId: items[0].product.merchantId,

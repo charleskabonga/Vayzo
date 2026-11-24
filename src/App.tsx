@@ -20,11 +20,29 @@ import { TermsAndConditionsModal } from './components/TermsAndConditionsModal';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { CustomDomainModal } from './components/CustomDomainModal';
 import { LoyaltyRewardsModal } from './components/LoyaltyRewardsModal';
+import { AuthModal } from './components/AuthModal';
 import { notificationService } from './services/notificationService';
 import { SEED_PRODUCTS, SEED_MERCHANTS, INITIAL_ORDERS, INITIAL_LEDGER } from './data/seedData';
 import { UserRole, Product, CartItem, Order, FinancialLedgerEntry, Merchant, AppNotification } from './types';
-import { auth, signInWithGoogle, logOut, testConnection } from './services/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import {
+  AppAuthUser,
+  getCurrentSession,
+  onAuthSessionChange,
+  syncProfileAndRoleOnAuth,
+  signOutUser,
+  fetchStores,
+  insertStore,
+  fetchProducts,
+  insertProduct,
+  bulkInsertProducts,
+  updateProductInDb,
+  fetchOrders,
+  insertOrder,
+  updateOrderStatusInDb,
+  fetchDeliveries,
+  insertDeliveryForOrder,
+  updateDeliveryStatusForOrder,
+} from './services/supabaseService';
 import { OrderStatus, validateOrderTransition } from './utils/orderStateMachine';
 import { calculateOrderFinancials } from './utils/economics';
 
@@ -32,7 +50,8 @@ import { calculateOrderFinancials } from './utils/economics';
 
 export default function App() {
   const [activeRole, setActiveRole] = useState<UserRole>('customer');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AppAuthUser | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Core Collections State
   const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
@@ -142,15 +161,70 @@ export default function App() {
     localStorage.setItem('vayzo_orders_v2', JSON.stringify(orders));
   }, [orders]);
 
-  // Firebase Boot connection check and Auth Listener
+  // Supabase Auth Session Listener & Initial PostgreSQL Data Hydration
   useEffect(() => {
-    testConnection();
+    let mounted = true;
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const loadDatabaseRecords = async (isAuthenticated: boolean) => {
+      const [dbStores, dbProducts] = await Promise.all([
+        fetchStores(),
+        fetchProducts(),
+      ]);
+
+      if (!mounted) return;
+      if (dbStores && dbStores.length > 0) {
+        setMerchants(dbStores);
+        setActiveMerchantId(dbStores[0].id);
+      }
+      if (dbProducts && dbProducts.length > 0) {
+        setProducts(dbProducts);
+      }
+
+      if (isAuthenticated) {
+        const [dbOrders] = await Promise.all([
+          fetchOrders(),
+          fetchDeliveries(),
+        ]);
+        if (mounted && dbOrders && dbOrders.length > 0) {
+          setOrders(dbOrders);
+        }
+      }
+    };
+
+    const hydrateSession = async () => {
+      const session = await getCurrentSession();
+      if (!mounted) return;
+      if (session?.user) {
+        const appUser = await syncProfileAndRoleOnAuth(session.user);
+        if (mounted) {
+          setCurrentUser(appUser);
+        }
+        await loadDatabaseRecords(true);
+      } else {
+        setCurrentUser(null);
+        await loadDatabaseRecords(false);
+      }
+    };
+
+    hydrateSession();
+
+    const unsubscribe = onAuthSessionChange(async (_event, session) => {
+      if (!mounted) return;
+      if (session?.user) {
+        const appUser = await syncProfileAndRoleOnAuth(session.user);
+        if (mounted) {
+          setCurrentUser(appUser);
+        }
+        await loadDatabaseRecords(true);
+      } else {
+        setCurrentUser(null);
+      }
     });
 
-    return () => unsubscribe();
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   // Cart Handlers
@@ -197,6 +271,11 @@ export default function App() {
   // Order Placement Handler
   const handleOrderPlaced = (newOrder: Order) => {
     setOrders((prev) => [newOrder, ...prev]);
+    void insertOrder(newOrder).then((inserted) => {
+      if (inserted) {
+        void insertDeliveryForOrder(newOrder);
+      }
+    });
 
     // Financial breakdown and immutable ledger recording
     const fin = calculateOrderFinancials({
@@ -270,6 +349,9 @@ export default function App() {
           updatedAt: new Date().toISOString()
         };
 
+        void updateOrderStatusInDb(orderId, nextStatus, newTimeline);
+        void updateDeliveryStatusForOrder(orderId, nextStatus);
+
         if (trackedOrder?.id === orderId) {
           setTrackedOrder(updated);
         }
@@ -340,10 +422,11 @@ export default function App() {
 
   // Merchant Inventory Handlers
   const handleUpdateProductStock = (productId: string, newStock: number) => {
+    const clamped = Math.max(0, newStock);
+    void updateProductInDb(productId, { stock: clamped });
     setProducts((prev) =>
       prev.map((p) => {
         if (p.id === productId) {
-          const clamped = Math.max(0, newStock);
           if (clamped < 10 && clamped < p.stock) {
             notificationService.sendPushNotification({
               title: 'Low Stock Risk Alert ⚠️',
@@ -362,8 +445,10 @@ export default function App() {
 
 
   const handleUpdateProductPrice = (productId: string, newPrice: number) => {
+    const clamped = Math.max(1, newPrice);
+    void updateProductInDb(productId, { price: clamped });
     setProducts((prev) =>
-      prev.map((p) => (p.id === productId ? { ...p, price: Math.max(1, newPrice) } : p))
+      prev.map((p) => (p.id === productId ? { ...p, price: clamped } : p))
     );
   };
 
@@ -387,11 +472,13 @@ export default function App() {
       reviewCount: 0
     };
     setProducts((prev) => [fullProd, ...prev]);
+    void insertProduct(fullProd);
   };
 
   const handleRegisterMerchant = (newMerchant: Merchant) => {
     setMerchants((prev) => [newMerchant, ...prev]);
     setActiveMerchantId(newMerchant.id);
+    void insertStore(newMerchant, currentUser?.id);
   };
 
   const activeMerchant = merchants.find((m) => m.id === activeMerchantId) || merchants[0];
@@ -416,6 +503,7 @@ export default function App() {
       reviewCount: 0
     }));
     setProducts((prev) => [...fullProds, ...prev]);
+    void bulkInsertProducts(fullProds);
   };
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -439,8 +527,10 @@ export default function App() {
         selectedTownship={selectedTownship}
         onTownshipChange={setSelectedTownship}
         currentUser={currentUser}
-        onSignIn={signInWithGoogle}
-        onSignOut={logOut}
+        onSignIn={() => setIsAuthModalOpen(true)}
+        onSignOut={() => {
+          void signOutUser().then(() => setCurrentUser(null));
+        }}
       />
 
 
@@ -596,6 +686,12 @@ export default function App() {
         isOpen={isLoyaltyOpen}
         onClose={() => setIsLoyaltyOpen(false)}
         pointsBalance={loyaltyPoints}
+      />
+
+      {/* Supabase Auth Modal (Sign In / Sign Up) */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
 
       {/* Enterprise Professional Footer */}

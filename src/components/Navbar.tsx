@@ -6,6 +6,7 @@
 import React from 'react';
 import { ShoppingBag, Sparkles, Store, Bike, ShieldCheck, MapPin, User, LogIn, LogOut, Bell } from 'lucide-react';
 import { UserRole } from '../types';
+import type { AppAuthUser } from '../services/supabaseService';
 
 interface NavbarProps {
   activeRole: UserRole;
@@ -19,7 +20,7 @@ interface NavbarProps {
   onOpenLoyalty?: () => void;
   selectedTownship: string;
   onTownshipChange: (township: string) => void;
-  currentUser: any;
+  currentUser: AppAuthUser | null;
   onSignIn: () => void;
   onSignOut: () => void;
 }
@@ -214,11 +215,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {/* Firebase Auth Google Sign In Button */}
+          {/* Supabase Auth Sign In / Account Controls */}
           {currentUser ? (
             <div className="flex items-center gap-2 pl-2 border-l border-emerald-800 text-xs">
               <div className="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center font-bold text-lime-300 text-xs border border-emerald-700">
-                {currentUser.displayName ? currentUser.displayName[0] : 'U'}
+                {currentUser.displayName ? currentUser.displayName[0].toUpperCase() : 'U'}
               </div>
               <span className="hidden lg:inline text-emerald-200 text-xs truncate max-w-[120px]">
                 {currentUser.displayName || currentUser.email}
@@ -236,7 +237,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onSignIn}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-emerald-950 hover:bg-slate-100 font-bold text-xs shadow-sm transition active:scale-95"
-              aria-label="Sign in with Google"
+              aria-label="Sign in to Vayzo"
             >
               <LogIn className="w-3.5 h-3.5 text-emerald-800" />
               <span>Sign In</span>
